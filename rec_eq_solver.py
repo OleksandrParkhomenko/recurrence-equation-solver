@@ -2,14 +2,14 @@ import numpy
 
 
 
-class CharacteristicEquetion:
+class CharacteristicEquation:
 
 	def __init__(self, poly):
-		self.equetion = numpy.poly1d(poly)
+		self.equation = numpy.poly1d(poly)
 
 
 	def __repr__(self):
-		return self.equetion
+		return self.equation
 
 
 	def __str__(self):
@@ -17,22 +17,22 @@ class CharacteristicEquetion:
 
 
 	def solve(self):
-		return numpy.roots(self.equetion)
+		return numpy.roots(self.equation)
 
 
 
-class RecurrenceEquetion:
+class RecurrenceEquation:
 
-	def __init__(self, equetion, init_conditions):
-		self.__equetion_str	 	= equetion
-		self.__coefs		 	= self.__parse(equetion)
-		self.__charact_eq		= CharacteristicEquetion(self.__coefs)
+	def __init__(self, equation, init_conditions):
+		self.__equation_str	 	= equation
+		self.__coefs		 	= self.__parse(equation)
+		self.__charact_eq		= CharacteristicEquation(self.__coefs)
 		self.__init_conditions	= init_conditions
 		self.__solution 		= None
 
 
 	def __repr__(self):
-		return self.__equetion_str
+		return self.__equation_str
 
 
 	def __str__(self):
@@ -40,20 +40,18 @@ class RecurrenceEquetion:
 
 
 	def get_charact_eq(self):
-		return self.__charact_eq.equetion
+		return self.__charact_eq.equation
 
 
 	def get_solution(self):
 		if self.__solution is None:
-			return "Equetion hasn't been solved jet or doesn't have a solution"
+			return "Equation hasn't been solved jet or doesn't have a solution"
 
 		solution = "a(n) = "
 		for i, _ in enumerate(self.__solution):
 			if self.__solution[i] >= 0 and i > 0:
 				solution += "+"
 			solution += "{0:,.2f}({0:,.2f})^n".format(self.__solution[i], self.__coefs[i])
-			#"{0:,.2f}".format(2083525.34561)
-			#solution += str(self.__solution[i]) + "(" + str(self.__coefs[i]) + ")^n "
 
 		return solution
 
@@ -75,21 +73,21 @@ class RecurrenceEquetion:
 		return self.__solution
 
 
-	def __parse(self, equetion_str):
-		equetion_str = equetion_str.replace("n","")
-		equetion_str = equetion_str.replace("=","")
-		equetion_str = equetion_str.replace("+","")
-		equetion_str = equetion_str.replace(" ","")
+	def __parse(self, equation_str):
+		equation_str = equation_str.replace("n","")
+		equation_str = equation_str.replace("=","")
+		equation_str = equation_str.replace("+","")
+		equation_str = equation_str.replace(" ","")
 		elements	 = dict()
 
-		while equetion_str:	
-			a_index = equetion_str.find("a")
-			open_p 	= equetion_str.find("(")
-			close_p = equetion_str.find(")")
-			elem 	= equetion_str[open_p + 1:close_p]
+		while equation_str:	
+			a_index = equation_str.find("a")
+			open_p 	= equation_str.find("(")
+			close_p = equation_str.find(")")
+			elem 	= equation_str[open_p + 1:close_p]
 			elem 	=-int(elem) if elem != "" else 0
-			value 	= equetion_str[:a_index]
-			equetion_str   = equetion_str[close_p + 1:]
+			value 	= equation_str[:a_index]
+			equation_str   = equation_str[close_p + 1:]
 
 			if value != "" and value != "-":
 				elements[elem] = int(value)
@@ -115,16 +113,16 @@ example_1_solutions = [1,2]
 example_2 			= "a(n) = -a(n-1) + 4a(n-2) + 4a(n-3)"
 example_2_solutions = [8,6,26]
 
-eq1 = RecurrenceEquetion(example_1, example_1_solutions)
-eq2 = RecurrenceEquetion(example_2, example_2_solutions)
+eq1 = RecurrenceEquation(example_1, example_1_solutions)
+eq2 = RecurrenceEquation(example_2, example_2_solutions)
 
 print("Example #1:")
-print("\nEquetion: ", eq1)
+print("\nEquation: ", eq1)
 eq1.solve()
 print("Solution: ", eq1.get_solution())
 
 
 print("\n\nExample #2:")
-print("\nEquetion: ", eq2)
+print("\nEquation: ", eq2)
 eq2.solve()
 print("Solution: ",eq2.get_solution())
